@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Order Item Management</h1>
+    <a href="/orderItems/create" class="btn btn-primary mb-3">Add New Order Item</a>
+
+    <h2>Order Items</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Order Item ID</th>
+            <th>Order ID</th>
+            <th>Instrument Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+            <th>Actions</th>  <!-- Add an Actions column -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderItem : ${orderItems}">
+            <td th:text="${orderItem.orderItemId}"></td>
+            <td th:text="${orderItem.order?.orderId ?: 'N/A'}"></td>
+            <td th:text="${orderItem.instrument?.name ?: 'N/A'}"></td>
+            <td th:text="${orderItem.quantity ?: 0}"></td>
+            <td th:text="${orderItem.unitPrice ?: 0}"></td>
+            <td th:text="${orderItem.quantity?.multiply(orderItem.unitPrice)?.toPlainString() ?: 'N/A'}"></td>
+            <td>
+                <a th:href="@{/orderItems/{id}/edit(id=${orderItem.orderItemId})}" class="btn btn-warning btn-sm me-2">Edit</a>
+                <form th:action="@{/orderItems/{id}/delete(id=${orderItem.orderItemId})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <a th:href="@{/orderItems/{id}(id=${orderItem.orderItemId})}" class="btn btn-info btn-sm">Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

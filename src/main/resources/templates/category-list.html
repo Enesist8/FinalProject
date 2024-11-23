@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Category CRUD</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script> </head>
+<body>
+
+<h1>Category CRUD</h1>
+
+<div id="category-form-container" style="display:none;">
+  <form id="category-form">
+    <input type="hidden" id="categoryId" name="id">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+<table id="category-table">
+  <thead>
+  <tr><th>ID</th><th>Name</th><th>Actions</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button id="new-category-button">New Category</button>
+
+<script>
+  const apiUrl = '/api/categories';
+  const tableBody = document.querySelector('#category-table tbody');
+  const formContainer = document.getElementById('category-form-container');
+  const form = document.getElementById('category-form');
+  const newCategoryButton = document.getElementById('new-category-button');
+
+  // Function to fetch and display categories
+  async function fetchCategories() {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    displayCategories(data);
+  }
+
+  function displayCategories(categories) {
+    tableBody.innerHTML = '';
+    categories.forEach(category => {
+      const row = tableBody.insertRow();
+      row.insertCell().textContent = category.id;
+      row.insertCell().textContent = category.name;
+      const actions = row.insertCell();
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+      editButton.onclick = () => editCategory(category);
+      actions.appendChild(editButton);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = () => deleteCategory(category.id);
+      actions.appendChild(deleteButton);
+    });
+  }
+
+  async function saveCategory(event) {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const categoryId = formData.get('id');
+    const url = categoryId ? `${apiUrl}/${categoryId}` : apiUrl;
+    const method = categoryId ? 'PUT' : 'POST';
+
+    const response = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(formData.entries()))
+    });
+
+    if (response.ok) {
+      formContainer.style.display = 'none';
+      form.reset();
+      fetchCategories();
+    }
+  }
+
+  async function deleteCategory(id) {
+    if(confirm('Are you sure?')) {
+      await fetch(`${apiUrl}/${id}`, { method: 'DELETE'});
+      fetchCategories();
+    }
+  }
+
+  function editCategory(category) {
+    document.getElementById('categoryId').value = category.id;
+    document.getElementById('name').value = category.name;
+    formContainer.style.display = 'block';
+  }
+
+  newCategoryButton.onclick = () => {
+    formContainer.style.display = 'block';
+    form.reset();
+  };
+
+  form.onsubmit = saveCategory;
+  fetchCategories();
+</script>
+
+</body>
+</html>

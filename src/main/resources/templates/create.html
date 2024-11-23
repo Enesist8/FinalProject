@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create User</title>
+</head>
+<body>
+<form th:object="${user}" th:action="@{/admin/user/create}" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required>
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    </div>
+    <div>
+        <label for="roles">Roles:</label>
+        <select id="roles" name="roles[]" multiple required>
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Create User">
+    </div>
+    <div th:if="${usernameError}" th:text="${usernameError}" class="error"></div>
+    <div th:if="${generalError}" th:text="${generalError}" class="error"></div>
+</form>
+</body>
+</html>

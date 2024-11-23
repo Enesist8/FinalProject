@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Instrument</title>
+</head>
+<body>
+<h1>Edit Instrument</h1>
+<form th:action="@{/instruments/{id}/edit(id=${instrument.instrumentId})}" th:object="${instrument}" method="post">
+    <input type="hidden" th:field="*{instrumentId}" />
+    Name: <input type="text" th:field="*{name}" required/><br>
+    Description: <textarea th:field="*{description}"></textarea><br>
+    Brand: <input type="text" th:field="*{brand}"/><br>
+    Type: <input type="text" th:field="*{type}"/><br>
+    Price: <input type="number" th:field="*{price}" step="0.01" required/><br>
+    <button type="submit">Save Changes</button>
+</form>
+</body>
+</html>

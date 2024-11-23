@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Instrument Category</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <h1>Edit Instrument Category</h1>
+  <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+  <form th:action="@{/instrumentCategories/update/{id}(id=${instrumentCategory.instrumentCategoryId})}"
+        th:object="${instrumentCategory}" method="post">
+    <input type="hidden" th:field="*{instrumentCategoryId}" />
+    <div class="mb-3">
+      <label for="instrumentId" class="form-label">Instrument</label>
+      <select th:field="*{instrument.instrumentId}" class="form-select" id="instrumentId" required>
+        <option th:each="instrument : ${instruments}" th:value="${instrument.instrumentId}"
+                th:text="${instrument.name}"
+                th:selected="${instrument.instrumentId == instrumentCategory.instrument.instrumentId}"></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="categoryId" class="form-label">Category</label>
+      <select th:field="*{category.categoryId}" class="form-select" id="categoryId" required>
+        <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                th:text="${category.categoryName}"
+                th:selected="${category.categoryId == instrumentCategory.category.categoryId}"></option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success">Save Changes</button>
+  </form>
+  <a th:href="@{/instrumentCategories}">Back to Instrument Categories</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

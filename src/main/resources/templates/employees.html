@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employees</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Employee Management</h1>
+    <a th:href="@{/employees/create}" class="btn btn-primary mb-3">Add New Employee</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Login</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.employeeId}"></td>
+            <td th:text="${employee.firstName}"></td>
+            <td th:text="${employee.lastName}"></td>
+            <td th:text="${employee.email}"></td>
+            <td th:text="${employee.role}"></td>
+            <td th:text="${employee.login}"></td>
+            <td>
+                <a th:href="@{/employees/{id}/edit(id=${employee.employeeId})}" class="btn btn-warning btn-sm me-2">Edit</a>
+                <form th:action="@{/employees/{id}/delete(id=${employee.employeeId})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <a th:href="@{/employees/{id}/details(id=${employee.employeeId})}" class="btn btn-info btn-sm">Details</a>
+                <a th:href="@{/employees/{id}/changePassword(id=${employee.employeeId})}" class="btn btn-info btn-sm">Change Password</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

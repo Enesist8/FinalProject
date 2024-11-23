@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Instrument Details</title>
+</head>
+<body>
+<h1>Instrument Details</h1>
+<p>ID: <span th:text="${instrument.instrumentId}"></span></p>
+<p>Name: <span th:text="${instrument.name}"></span></p>
+<p>Description: <span th:text="${instrument.description}"></span></p>
+<p>Brand: <span th:text="${instrument.brand}"></span></p>
+<p>Type: <span th:text="${instrument.type}"></span></p>
+<p>Price: <span th:text="${instrument.price}"></span></p>
+<a th:href="@{/instruments}">Back to Instruments</a>
+</body>
+</html>

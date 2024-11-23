@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Instrument</title>
+</head>
+<body>
+<h1>Create New Instrument</h1>
+<form th:action="@{/instruments/create}" th:object="${instrument}" method="post">
+    Name: <input type="text" th:field="*{name}" required/><br>
+    Description: <textarea th:field="*{description}"></textarea><br>
+    Brand: <input type="text" th:field="*{brand}"/><br>
+    Type: <input type="text" th:field="*{type}"/><br>
+    Price: <input type="number" th:field="*{price}" step="0.01" required/><br>
+    <button type="submit">Create Instrument</button>
+</form>
+</body>
+</html>
